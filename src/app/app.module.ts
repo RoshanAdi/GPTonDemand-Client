@@ -15,6 +15,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoaderInterceptor} from "./spinner/interceptors/loader.interceptor";
 import { PopupComponent } from './popup/popup.component';
+import { RegistrationSuccessComponent } from './sign-up/registration-success/registration-success.component';
+import { RegistrationFailComponent } from './sign-up/registration-fail/registration-fail.component';
 
 const routes: Routes=[
   {path:'login',component:LoginComponent},
@@ -26,7 +28,10 @@ const routes: Routes=[
     LoginComponent,
     SignUpComponent,
     SpinnerComponent,
-    PopupComponent
+    PopupComponent,
+    RegistrationSuccessComponent,
+    RegistrationFailComponent,
+
   ],
   imports: [RouterModule.forRoot(routes),
     BrowserModule,
