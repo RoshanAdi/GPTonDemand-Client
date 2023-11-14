@@ -16,6 +16,7 @@ export class LoginComponent {
   }
   isLoggedIn = false;
   isLoginFailed = false;
+  errorMessage: string | undefined;
   SubmitLogin(LoginData:NgForm){
     this.authService.login(LoginData)
       .subscribe(
@@ -31,7 +32,19 @@ export class LoginComponent {
   this.router.navigate(['/profile']);
 
         },
+        (error) => {
+          // Handle error
+          if (error.status === 401) {
+            this.errorMessage = 'Invalid username or password';
+          } else if (error.status === 399) {
+            this.errorMessage = 'User is not enabled. Please verify your email.';
+          } else {
+            this.errorMessage = 'An unexpected error occurred';
+          }
+          console.error(error);
+        }
 
       );
+
   }
 }

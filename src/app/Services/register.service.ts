@@ -12,17 +12,10 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class RegisterService {
-Recivedresults:any
-  Recivedresults2:any
+
   constructor(private http: HttpClient) { }
 
-  //register(RegisterData: any){
-   // console.log("username and pass = "+RegisterData)
-   // this.http.post<any>(AUTH_API + 'api1/register', RegisterData, httpOptions).subscribe(
-    //  response =>
-   // this.Recivedresults = JSON.stringify(response));
-//return this.Recivedresults2= JSON.parse(this.Recivedresults)
-// }
+
   register(RegisterData: any): Observable<any> {
   return this.http.request(new HttpRequest('POST',AUTH_API + 'api1/register', RegisterData, {}));
   }
