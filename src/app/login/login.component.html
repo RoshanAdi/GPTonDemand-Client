@@ -11,5 +11,10 @@
     <div class="d-flex justify-content-center">
     <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body position-relative">Login</button>
     </div>
+
   </form>
+  </div>
+  <div *ngIf="errorMessage" class="alert-warning" style="color: red;">
+    {{ errorMessage }}
   </div></div>
+
