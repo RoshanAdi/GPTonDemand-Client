@@ -15,6 +15,9 @@
   </form>
   </div>
   <div *ngIf="errorMessage" class="alert-warning" style="color: red;">
+    <br>
     {{ errorMessage }}
+    <br>
+    <button type="submit" class="btn btn-success btn-sm btn-block gradient-custom-4 text-body position-relative" (click)="onResetClick()">Reset password</button>
   </div></div>
 

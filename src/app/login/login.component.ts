@@ -47,4 +47,7 @@ export class LoginComponent {
       );
 
   }
+  onResetClick() {
+    this.router.navigate(['/reset-password']);
+  }
 }

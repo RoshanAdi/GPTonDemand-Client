@@ -21,11 +21,12 @@ export class AuthService {
   constructor(private http: HttpClient, private  tokenStorageService: TokenStorageService) { }
 
   login(LoginData: string | NgForm): Observable<any> {
-    console.log("username and pass = "+LoginData)
     return this.http.post(AUTH_API + 'api1/login', LoginData, httpOptions);
   }
 
-
+  resetPassword(ResetData: string | NgForm): Observable<any> {
+    return this.http.post(AUTH_API + 'api1/reset-password', ResetData, httpOptions);
+  }
 
   refreshToken(token: string) {
     return this.http.post(AUTH_API + 'refreshtoken', {
