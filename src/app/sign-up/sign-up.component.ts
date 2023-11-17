@@ -47,14 +47,11 @@ export class SignUpComponent {
 
     // You can set the message or content in the popup service if needed.
   }
-  hideLoadingSpinner(){
-    this.loader.hideLoader();
-  }
+
   Submit(RegData: NgForm) {
     this.showLoadingSpinner();
     this.registerService.register(RegData).pipe(
       finalize(() => {
-        this.hideLoadingSpinner();
         this.showPopup(this.RecivedResults?.body?.message)
 
 

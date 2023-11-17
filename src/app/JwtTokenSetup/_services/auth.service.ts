@@ -27,6 +27,12 @@ export class AuthService {
   resetPassword(ResetData: string | NgForm): Observable<any> {
     return this.http.post(AUTH_API + 'api1/reset-password', ResetData, httpOptions);
   }
+  submitNewPW(ResetData: string | NgForm): Observable<any> {
+    return this.http.post(AUTH_API + 'api1/submit=password', ResetData, httpOptions);
+  }
+  verifyEmail(ResetData: string | NgForm): Observable<any> {
+    return this.http.post(AUTH_API + 'api1/verify-email', ResetData, httpOptions);
+  }
 
   refreshToken(token: string) {
     return this.http.post(AUTH_API + 'refreshtoken', {
