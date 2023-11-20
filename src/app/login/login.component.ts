@@ -4,6 +4,7 @@ import {AuthService} from "../JwtTokenSetup/_services/auth.service";
 import {TokenStorageService} from "../JwtTokenSetup/_services/token-storage.service";
 import {AppRoutingModule} from "../app-routing.module";
 import {Router} from "@angular/router";
+import {LoaderService} from "../Services/loader.service";
 
 @Component({
   selector: 'app-login',
@@ -12,12 +13,16 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent {
 
-  constructor(private authService:AuthService,private tokenStorage: TokenStorageService, private  router:Router ) {
+  constructor(private authService:AuthService,private tokenStorage: TokenStorageService, private  router:Router,private loader: LoaderService ) {
   }
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage: string | undefined;
+  showLoadingSpinner() {
+    this.loader.showLoader();
+  }
   SubmitLogin(LoginData:NgForm){
+    this.showLoadingSpinner()
     this.authService.login(LoginData)
       .subscribe(
         token => {
@@ -29,7 +34,7 @@ export class LoginComponent {
           this.isLoginFailed = false;
           this.isLoggedIn = true;
 
-  this.router.navigate(['/profile']);
+  this.router.navigate(['/home']);
 
         },
         (error) => {
@@ -46,5 +51,8 @@ export class LoginComponent {
 
       );
 
+  }
+  onResetClick() {
+    this.router.navigate(['/reset-password']);
   }
 }

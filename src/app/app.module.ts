@@ -17,6 +17,8 @@ import {LoaderInterceptor} from "./spinner/interceptors/loader.interceptor";
 import { PopupComponent } from './popup/popup.component';
 import { RegistrationSuccessComponent } from './sign-up/registration-success/registration-success.component';
 import { RegistrationFailComponent } from './sign-up/registration-fail/registration-fail.component';
+import { MainHomeComponent } from './main-home/main-home.component';
+import { PasswordResetComponent } from './login/password-reset/password-reset.component';
 
 const routes: Routes=[
   {path:'login',component:LoginComponent},
@@ -31,6 +33,8 @@ const routes: Routes=[
     PopupComponent,
     RegistrationSuccessComponent,
     RegistrationFailComponent,
+    MainHomeComponent,
+    PasswordResetComponent,
 
   ],
   imports: [RouterModule.forRoot(routes),
