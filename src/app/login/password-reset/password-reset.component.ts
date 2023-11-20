@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {AuthService} from "../../JwtTokenSetup/_services/auth.service";
 import {Router} from "@angular/router";
@@ -6,31 +6,29 @@ import {LoaderService} from "../../Services/loader.service";
 import {TokenStorageService} from "../../JwtTokenSetup/_services/token-storage.service";
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
+  selector: 'app-password-reset',
+  templateUrl: './password-reset.component.html',
+  styleUrls: ['./password-reset.component.css']
 })
-export class ResetPasswordComponent {
-  isVerificationSent: boolean = false;
-  isLoggedIn = false;
-  isLoginFailed = false;
+export class PasswordResetComponent {
+  @ViewChild('ResetData') resetForm!: NgForm;
   constructor(private authService:AuthService, private  router:Router,private loader: LoaderService,private tokenStorage: TokenStorageService) {
   }
-
-  reloadComponent() {
-    this.router.navigate(['/reset-password']).then(() => {
-      window.location.reload();
-    });
-  }
-
   errorMessage: string | undefined;
   isThereError:boolean=false;
-
+  isVerificationSent: boolean = false;
+  userEmail:String=""
+  emailNgForm:any
+  isLoggedIn = false;
+  isLoginFailed = false;
+  verificationCode:any
   showLoadingSpinner() {
     this.loader.showLoader();
   }
   SubmitEmail(ResetData: NgForm) {
+    this.emailNgForm=ResetData
     this.showLoadingSpinner();
+    this.stopCountdown()
     this.startCountdown();
     this.authService.resetPassword(ResetData).subscribe(
       response => {
@@ -49,26 +47,39 @@ export class ResetPasswordComponent {
     );
   }
   verifyEmail(ResetData: NgForm): void {
+    this.showLoadingSpinner();
+    this.stopCountdown()
     this.authService.verifyEmail(ResetData).subscribe(
-      (response: any) => {
-        console.warn(response);
-        const status = response.status;
-        if (status === 'success') {
-          this.router.navigate(['/new-password']);
-        } else {
-          this.router.navigate(['/reg-fail']);
-        }
+      token => {
+        console.log("token received from login = "+token.token)
+        this.tokenStorage.saveToken(token.token);
+        this.tokenStorage.saveRefreshToken(token.token);
+        this.tokenStorage.saveUser(token);
+        console.log("token received from login = "+token.token)
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+
+        this.router.navigate(['/home']);
+
       },
       (error) => {
+        if (error.status === 401) {
+          this.errorMessage = 'Invalid verification code';
+        } else if (error.status === 399) {
+          this.errorMessage = 'unknown error.';
+        } else {
+          this.errorMessage = 'An unexpected error occurred';
+        }
         console.error(error);
-        this.router.navigate(['/error']);
       }
-    );
-  }
 
-  timeLeft: number = 60; // 1 minute in seconds
+    );
+
+  }
+  timeLeft: number = 60;
   interval: any;
   startCountdown() {
+this.isCountDownFinish=false
     this.timeLeft = 60;
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
@@ -78,8 +89,21 @@ export class ResetPasswordComponent {
       }
     }, 1000);
   }
+  isCountDownFinish:boolean=true
   stopCountdown() {
     clearInterval(this.interval);
-    this.isVerificationSent=false
+    this.isCountDownFinish=true
+  }
+  reloadComponent() {
+    this.router.navigate(['/reset-password']).then(() => {
+      window.location.reload();
+    });
+  }
+  sendAgain(){
+    this.SubmitEmail(this.emailNgForm)
+  }
+  showNewFields:boolean=false
+  showNewPWFields(){
+    this.showNewFields=true
   }
 }
