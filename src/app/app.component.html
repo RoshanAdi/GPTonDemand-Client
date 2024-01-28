@@ -2,7 +2,7 @@
 <app-spinner></app-spinner>
 <app-popup></app-popup>
 <div class="topnav">
-  <a class="active" href="">Home</a>
+  <a class="active" routerLink="/home">Home</a>
   <div class="topnav-right" *ngIf="authService.isLoggedIn()">
     <a routerLink="/login">Login</a>
     <a routerLink="/register">Register</a>

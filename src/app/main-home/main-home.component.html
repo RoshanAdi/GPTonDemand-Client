@@ -1,1 +1,70 @@
-<p>main-home works!</p>
+
+
+
+<div class="split-container">
+  <div class="left-panel" *ngIf="showLeftPanel" style="width: 25vw;">
+
+
+
+
+
+
+    <div style=" padding:10px;position: relative; display:  flex; flex-direction: column; align-items: center; height: 100%;">
+
+      <!-- your.component.html -->
+
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" [(ngModel)]="apiKey" placeholder="Api key - {{newUser.apiKey+' x x x'}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="saveApiKey()">Save</button>
+        </div>
+      </div>
+      <!-- Tagline -->
+      <div class="tagline">
+        Generate your API key from OpenAI
+      </div>
+      <!-- Link -->
+      <div class="link">
+        <a href="https://platform.openai.com/account/api-keys" target="_blank">Go to OpenAI</a>
+      </div>
+
+
+
+      <div style="display: flex; align-items: center; margin-top: auto;">
+        <app-initials-icon [firstName]="newUser.firstName" [lastName]="newUser.lastName" [size]="'40px'" style="margin-right: 5px;"></app-initials-icon>
+        <b style="color: #f2f2f2; margin: 0; font-size: 20px;">{{ newUser.firstName + ' ' + newUser.lastName }}</b>
+      </div>
+    </div>
+
+  </div>
+  <div class="right-panel" [style.width]="rightPanelWidth">
+    <div class="chat-history" #chatHistory>
+      <div *ngFor="let message of messages" class="message">{{ message }}
+
+      </div>
+
+
+
+    </div>
+
+    <div class="chat-container" [style.width]="chatBoxWidth">
+
+
+
+
+
+      <li class="bg-white mb-3">
+
+        <div class="form-outline" style="position: relative;">
+      <textarea class="form-control" id="textAreaExample2" rows="4" #messageInput
+                [(ngModel)]="currentMessage"
+                (keydown.enter)="onKeyPress($event)"
+                placeholder="Type your message..."></textarea>
+          <button type="button" class="btn btn-light btn-outline-dark btn-circle float-end" (click)="onArrowClick()" style="position: absolute; top: 10px; right: 10px;">
+            <span style="color: black;">&uarr;</span>
+          </button> </div>
+      </li>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">

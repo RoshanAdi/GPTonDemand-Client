@@ -19,6 +19,9 @@ import { RegistrationSuccessComponent } from './sign-up/registration-success/reg
 import { RegistrationFailComponent } from './sign-up/registration-fail/registration-fail.component';
 import { MainHomeComponent } from './main-home/main-home.component';
 import { PasswordResetComponent } from './login/password-reset/password-reset.component';
+import { InitialsIconComponent } from './Models/initials-icon/initials-icon.component';
+import {AlertModule} from "ngx-bootstrap/alert";
+
 
 const routes: Routes=[
   {path:'login',component:LoginComponent},
@@ -35,11 +38,14 @@ const routes: Routes=[
     RegistrationFailComponent,
     MainHomeComponent,
     PasswordResetComponent,
+    InitialsIconComponent,
+
+
 
   ],
   imports: [RouterModule.forRoot(routes),
     BrowserModule,
-    FormsModule,HttpClientModule, AppRoutingModule, BrowserAnimationsModule,MatProgressSpinnerModule
+    FormsModule,HttpClientModule, AppRoutingModule, BrowserAnimationsModule,MatProgressSpinnerModule,AlertModule.forRoot(),
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

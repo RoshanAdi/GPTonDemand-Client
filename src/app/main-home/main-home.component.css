@@ -1,0 +1,59 @@
+/* custom-layout.component.css */
+
+.split-container {
+  display: flex;
+  height: 93vh;
+  overflow: hidden;
+}
+
+.left-panel {
+  background-color: black;
+  overflow-y: auto;
+}
+
+.right-panel {
+  background-color: white;
+  overflow-y: auto;
+}
+.chat-container {
+  padding-right: 1%;
+  padding-left: 1%;
+  position: fixed;
+  bottom: 10px;
+
+
+
+}
+
+/* Assuming .chat-history is your chat history container */
+
+.chat-history {
+  padding: 8px;
+  max-height: 73vh; /* Set a maximum height for the scrollable area */
+  overflow-y: auto; /* Enable vertical scrolling */
+  position: fixed; /* Fix the position */
+  top: 7vh; /* Stick it to the top */
+  width: 75%; /* Make it take the full width of the page */
+  background-color: #ffffff; /* Set a background color if needed */
+  z-index: 1000; /* Set a high z-index to make sure it's on top of other elements */
+}
+
+/* Optional: Add some padding or styling to make it look better */
+.chat-history-content {
+  padding: 10px;
+}
+/* styles.scss or styles.css */
+
+.tagline {
+  font-size: 14px;
+  color: white;
+  margin-top: 10px;
+}
+
+.link a {
+  color: white;
+  text-decoration: underline;
+}
+
+
+
