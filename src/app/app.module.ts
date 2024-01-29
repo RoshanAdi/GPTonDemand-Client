@@ -21,6 +21,8 @@ import { MainHomeComponent } from './main-home/main-home.component';
 import { PasswordResetComponent } from './login/password-reset/password-reset.component';
 import { InitialsIconComponent } from './Models/initials-icon/initials-icon.component';
 import {AlertModule} from "ngx-bootstrap/alert";
+import {HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions} from "ngx-highlightjs";
+import {HighlightPlusModule} from "ngx-highlightjs/plus";
 
 
 const routes: Routes=[
@@ -45,13 +47,24 @@ const routes: Routes=[
   ],
   imports: [RouterModule.forRoot(routes),
     BrowserModule,
-    FormsModule,HttpClientModule, AppRoutingModule, BrowserAnimationsModule,MatProgressSpinnerModule,AlertModule.forRoot(),
+    FormsModule,HttpClientModule, AppRoutingModule, BrowserAnimationsModule,MatProgressSpinnerModule,AlertModule.forRoot(),HighlightModule,HighlightPlusModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
-  }, {
+  },
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: <HighlightOptions>{
+        lineNumbers: false,
+        autoHighlight: true,
+        //coreLibraryLoader: () => import('highlight.js/lib/core'),
+        //lineNumbersLoader: () => import('ngx-highlightjs/line-numbers'),
+        themePath: 'node_modules/highlight.js/styles/github.css',
+        fullLibraryLoader: () => import('highlight.js'),
+      },
+    },{
     provide: HTTP_INTERCEPTORS,
     useClass: LoaderInterceptor,
     multi: true

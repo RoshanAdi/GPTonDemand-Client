@@ -13,6 +13,7 @@ import {NgForm} from "@angular/forms";
 import {finalize, Observable} from "rxjs";
 import {User} from "../Models/user";
 import {ChatMsg} from "../Models/chat-msg";
+import {HighlightAutoResult, HighlightLoader} from "ngx-highlightjs";
 
 @Component({
   selector: 'app-main-home',
@@ -20,13 +21,41 @@ import {ChatMsg} from "../Models/chat-msg";
   styleUrls: ['./main-home.component.css']
 })
 export class MainHomeComponent {
+
+  response!: HighlightAutoResult;
+
+  code = `<pre><code [highlight]="code"  (highlighted)="onHighlight($event)"  ></code></pre>
+
+
+    <h4>Highlight response</h4>
+    <pre>
+  <p>Language: {{ response?.language }}</p>
+  <p>Relevance: {{ response?.relevance }}</p>
+      <!-- Add more properties as needed -->
+</pre>
+`;
+
+
+
+
   rightPanelWidth = 'calc(100vw - 25vw)';
   showLeftPanel = true;
   chatBoxWidth: string = '75%'
   @ViewChild('chatHistory', { static: true }) private chatHistory!: ElementRef;
 
-  constructor(private cdr: ChangeDetectorRef, private chatService:ChatService, ) {
+  constructor(private cdr: ChangeDetectorRef, private chatService:ChatService,private hljsLoader: HighlightLoader ) {
     this.profile()
+  }
+
+
+  onHighlight(e: HighlightAutoResult) {
+    this.response = {
+      language: e.language,
+      relevance: e.relevance,
+      secondBest: '{...}',
+      value: '{...}',
+    };
+
   }
 
 

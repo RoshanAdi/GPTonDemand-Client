@@ -41,11 +41,26 @@
     <div class="chat-history" #chatHistory>
       <div *ngFor="let message of messages" class="message">{{ message }}
 
+
+
+
       </div>
 
 
 
     </div>
+
+    <h1>ngx-highlightjs</h1>
+
+    <pre><code [highlight]="code"  (highlighted)="onHighlight($event)"  ></code></pre>
+
+
+    <h4>Highlight response</h4>
+    <pre>
+  <p>Language: {{ response?.language }}</p>
+  <p>Relevance: {{ response?.relevance }}</p>
+      <!-- Add more properties as needed -->
+</pre>
 
     <div class="chat-container" [style.width]="chatBoxWidth">
 
