@@ -38,37 +38,29 @@
 
   </div>
   <div class="right-panel" [style.width]="rightPanelWidth">
+
+<div class="current-chat-history">
     <div class="chat-history" #chatHistory>
-      <div *ngFor="let message of messages" class="message">{{ message }}
-
-
-
-
+      <div *ngFor="let message of messages" class="message">
+       <div class="inline" ><app-initials-icon  *ngIf="message.role === 'User'" [firstName]="newUser.firstName" [lastName]="newUser.lastName" [size]="'25px'"></app-initials-icon></div>
+        <div class="inline" style="margin-left: 40px" *ngIf="message.role === 'User'">{{ "You : "+message.content.subContent }}</div>
+        <div  style="margin-left: 40px" *ngIf="message.role === 'Error'">{{ message.role+" : "+message.content.subContent }}</div>
+       <div  class="inline" ><app-initials-icon *ngIf="message.role ==='Assistant' && message.content.subContent.slice(0,12)==='Assistant : '"  [firstName]="'A'" [lastName]="'I'" [size]="'25px'"></app-initials-icon></div>
+          <div class="inline" style="margin-left: 40px" *ngIf="message.content.type === 'text' && message.role === 'Assistant'"  [letterByLetter]="message.content.subContent"></div>
+          <div  style="margin-left: 40px" *ngIf="message.content.type === 'code' && message.role === 'Assistant'">
+            <pre><code [highlight]="message.content.subContent"   (highlighted)="onHighlight($event)"  >
+            </code></pre>
+          </div>
       </div>
-
-
-
+      </div>
     </div>
-
-    <h1>ngx-highlightjs</h1>
-
-    <pre><code [highlight]="code"  (highlighted)="onHighlight($event)"  ></code></pre>
-
-
-    <h4>Highlight response</h4>
-    <pre>
-  <p>Language: {{ response?.language }}</p>
-  <p>Relevance: {{ response?.relevance }}</p>
-      <!-- Add more properties as needed -->
-</pre>
-
     <div class="chat-container" [style.width]="chatBoxWidth">
 
 
 
 
 
-      <li class="bg-white mb-3">
+
 
         <div class="form-outline" style="position: relative;">
       <textarea class="form-control" id="textAreaExample2" rows="4" #messageInput
@@ -78,8 +70,8 @@
           <button type="button" class="btn btn-light btn-outline-dark btn-circle float-end" (click)="onArrowClick()" style="position: absolute; top: 10px; right: 10px;">
             <span style="color: black;">&uarr;</span>
           </button> </div>
-      </li>
+
+    </div>
     </div>
   </div>
-</div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">

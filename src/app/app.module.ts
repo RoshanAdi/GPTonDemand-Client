@@ -23,6 +23,9 @@ import { InitialsIconComponent } from './Models/initials-icon/initials-icon.comp
 import {AlertModule} from "ngx-bootstrap/alert";
 import {HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions} from "ngx-highlightjs";
 import {HighlightPlusModule} from "ngx-highlightjs/plus";
+import { LetterByLetterDirective } from './letter-by-letter.directive';
+
+
 
 
 const routes: Routes=[
@@ -41,6 +44,8 @@ const routes: Routes=[
     MainHomeComponent,
     PasswordResetComponent,
     InitialsIconComponent,
+    LetterByLetterDirective,
+
 
 
 
@@ -57,10 +62,10 @@ const routes: Routes=[
     {
       provide: HIGHLIGHT_OPTIONS,
       useValue: <HighlightOptions>{
-        lineNumbers: false,
+        lineNumbers: true,
         autoHighlight: true,
         //coreLibraryLoader: () => import('highlight.js/lib/core'),
-        //lineNumbersLoader: () => import('ngx-highlightjs/line-numbers'),
+        lineNumbersLoader: () => import('ngx-highlightjs/line-numbers'),
         themePath: 'node_modules/highlight.js/styles/github.css',
         fullLibraryLoader: () => import('highlight.js'),
       },

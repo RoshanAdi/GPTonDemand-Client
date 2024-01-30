@@ -20,6 +20,8 @@ export class InitialsIconComponent {
   }
 
   getIconStyles(): any {
+    const fontSize = `${(1 / 2) * parseInt(this.size)}px`;
+
     return {
       width: this.size,
       height: this.size,
@@ -29,7 +31,7 @@ export class InitialsIconComponent {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: '16px', // Customize the font size as needed
+      fontSize: fontSize, // Adjust font size based on the provided size
     };
   }
 }

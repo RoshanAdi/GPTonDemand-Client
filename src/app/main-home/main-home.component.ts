@@ -13,9 +13,10 @@ import {NgForm} from "@angular/forms";
 import {finalize, Observable} from "rxjs";
 import {User} from "../Models/user";
 import {ChatMsg} from "../Models/chat-msg";
-import {HighlightAutoResult, HighlightLoader} from "ngx-highlightjs";
+import {HighlightAutoResult, HighlightJS, HighlightLoader, HighlightModule} from "ngx-highlightjs";
 
 @Component({
+
   selector: 'app-main-home',
   templateUrl: './main-home.component.html',
   styleUrls: ['./main-home.component.css']
@@ -24,16 +25,7 @@ export class MainHomeComponent {
 
   response!: HighlightAutoResult;
 
-  code = `<pre><code [highlight]="code"  (highlighted)="onHighlight($event)"  ></code></pre>
-
-
-    <h4>Highlight response</h4>
-    <pre>
-  <p>Language: {{ response?.language }}</p>
-  <p>Relevance: {{ response?.relevance }}</p>
-      <!-- Add more properties as needed -->
-</pre>
-`;
+  code = ''
 
 
 
@@ -43,7 +35,7 @@ export class MainHomeComponent {
   chatBoxWidth: string = '75%'
   @ViewChild('chatHistory', { static: true }) private chatHistory!: ElementRef;
 
-  constructor(private cdr: ChangeDetectorRef, private chatService:ChatService,private hljsLoader: HighlightLoader ) {
+  constructor(private cdr: ChangeDetectorRef, private chatService:ChatService, ) {
     this.profile()
   }
 
@@ -57,7 +49,6 @@ export class MainHomeComponent {
     };
 
   }
-
 
 
   scrollToBottom(): void {
@@ -84,31 +75,30 @@ export class MainHomeComponent {
   }
 
   @ViewChild('messageInput') messageInput: ElementRef<HTMLInputElement> | undefined;
-
-  messages: string[] = [];
   currentMessage: string = '';
-
+  messages: { content: { subContent: string, type: string }, role: string }[] = [];
 
   sendMessage(): void {
+
     if (this.currentMessage.trim() !== '') {
-      // Save the current message before clearing it
       const userMessage = this.currentMessage;
-
-      this.currentMessage = ''; // Clear the current message
-
-      // Add the user message to the messages array
-      this.messages.push("User : "+userMessage);
-
+      this.currentMessage = '';
+      this.messages.push({ content: {subContent:userMessage,type:'User'}, role: 'User' });
       this.textChat(userMessage).subscribe(
+
         (response: any) => {
-          // Handle successful response
-          const assistantMessage = "Assistant : " + JSON.parse(JSON.stringify(response))?.content;
-          this.messages.push(assistantMessage);
+          this.reArrange("Assistant : "+JSON.parse(JSON.stringify(response))?.content)
+          for (let i = 0; i < this.responseMessage2.length; i++) {
+            this.messages.push({ content: this.responseMessage2[i], role: 'Assistant' });
+          }
+          this.responseMessage2.splice(0, this.responseMessage2.length);
           this.scrollToBottom();
         },
         (error: any) => {
-          // Handle error
-          const errorMessage = "Error : " + (error.name || 'Unknown Error');
+          const errorMessage = {
+            content: {subContent:(error.name || 'Unknown Error'),type: 'Error'},
+            role: 'Error'
+          };
           this.messages.push(errorMessage);
         }
       );
@@ -127,7 +117,6 @@ export class MainHomeComponent {
     this.sendMessage();
   }
 
-  profileData:any
   newUser: User = new User('', '', '','');
 
   profile() {
@@ -138,7 +127,6 @@ export class MainHomeComponent {
       (response: any) => {
 
         this.newUser = JSON.parse(JSON.stringify(response.body));
-        //this.messages.push(JSON.stringify(response.body));
 
       });}
 
@@ -161,4 +149,34 @@ export class MainHomeComponent {
     this.chatMsg.content = userMessage;
     return this.chatService.textChat(this.chatMsg);
   }
+
+  responseMessage2: { subContent: string, type: string }[] = [];
+
+  private reArrange(text: string) {
+    let isSkipping = false;
+    let content:string =''
+
+    for (let i = 0; i < text.length; ++i) {
+      if (text[i] === '`' && text[i + 1] === '`' && text[i + 2] === '`') {
+        if (!isSkipping) {
+          this.responseMessage2.push({subContent:content,type:'text'});
+          content='';
+          i=i+2;
+          isSkipping = true;
+        } else {
+          i=i+2;
+          this.responseMessage2.push({subContent:content,type:'code'});
+          content='';
+          isSkipping = false;
+        }
+      }
+      else {content=content+text[i]}
+    }
+    if(content!=''){
+      this.responseMessage2.push({subContent:content,type:'text'})}
+    return this.responseMessage2;
+  }
+
+
+
 }
